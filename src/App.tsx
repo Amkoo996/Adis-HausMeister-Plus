@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Phone, Mail, MapPin, Wrench, Camera, ArrowRight, CheckCircle2, Globe, Upload, ArrowUp, Star, ChevronDown, ChevronUp, X } from 'lucide-react';
+import { Phone, Mail, MapPin, Wrench, Camera, ArrowRight, CheckCircle2, Globe, Upload, ArrowUp, Star, ChevronDown, ChevronUp, X, Menu } from 'lucide-react';
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 import { Textarea } from './components/ui/textarea';
@@ -54,6 +54,7 @@ export default function App() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [legalModal, setLegalModal] = useState<'imprint' | 'privacy' | 'terms' | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,13 +82,13 @@ export default function App() {
       {/* Navigation */}
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 z-50">
             <div className="bg-blue-600 p-1.5 rounded-lg">
-              <Wrench className="h-6 w-6 text-white" />
+              <Wrench className="h-5 w-5 md:h-6 md:w-6 text-white" />
             </div>
             <div className="flex flex-col">
-              <span className="text-xl font-extrabold tracking-tight leading-none">Adis HausMeister</span>
-              <span className="text-blue-600 font-bold text-sm leading-none">PLUS</span>
+              <span className="text-lg md:text-xl font-extrabold tracking-tight leading-none">Adis HausMeister</span>
+              <span className="text-blue-600 font-bold text-xs md:text-sm leading-none">PLUS</span>
             </div>
           </div>
           <nav className="hidden md:flex gap-6 items-center">
@@ -102,10 +103,50 @@ export default function App() {
               <button onClick={() => setLang('en')} className={`text-xl hover:scale-110 transition-transform ${lang === 'en' ? 'opacity-100 grayscale-0' : 'opacity-50 grayscale'}`} title="English">🇬🇧</button>
             </div>
           </nav>
-          <Button className="hidden md:inline-flex" onClick={() => window.location.href='#kontakt'}>
-            {t.nav.quote}
-          </Button>
+          
+          <div className="hidden md:flex items-center gap-4">
+            <Button onClick={() => window.location.href='#kontakt'}>
+              {t.nav.quote}
+            </Button>
+          </div>
+
+          {/* Mobile Nav Controls */}
+          <div className="flex md:hidden items-center gap-3 z-50">
+            <div className="flex items-center gap-1">
+              <button onClick={() => setLang('bs')} className={`text-xl hover:scale-110 transition-transform ${lang === 'bs' ? 'opacity-100 grayscale-0' : 'opacity-50 grayscale'}`} title="Bosanski">🇧🇦</button>
+              <button onClick={() => setLang('de')} className={`text-xl hover:scale-110 transition-transform ${lang === 'de' ? 'opacity-100 grayscale-0' : 'opacity-50 grayscale'}`} title="Deutsch">🇩🇪</button>
+              <button onClick={() => setLang('en')} className={`text-xl hover:scale-110 transition-transform ${lang === 'en' ? 'opacity-100 grayscale-0' : 'opacity-50 grayscale'}`} title="English">🇬🇧</button>
+            </div>
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden border-b bg-white overflow-hidden absolute top-16 left-0 right-0 shadow-lg"
+            >
+              <div className="flex flex-col px-4 py-6 gap-4">
+                <a href="#leistungen" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium hover:text-blue-600 transition-colors">{t.nav.services}</a>
+                <a href="#galerie" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium hover:text-blue-600 transition-colors">{t.nav.gallery}</a>
+                <a href="#bewertungen" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium hover:text-blue-600 transition-colors">{t.nav.reviews}</a>
+                <a href="#kontakt" onClick={() => setIsMobileMenuOpen(false)} className="text-lg font-medium hover:text-blue-600 transition-colors">{t.nav.contact}</a>
+                <Button className="w-full mt-4" onClick={() => { setIsMobileMenuOpen(false); window.location.href='#kontakt'; }}>
+                  {t.nav.quote}
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       <main>
@@ -113,7 +154,7 @@ export default function App() {
         <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://raw.githubusercontent.com/Amkoo996/Adis-HausMeister-Plus/main/public/Gemini_Generated_Image_55kxp555kxp555kx.png"
+              src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" 
               alt="Hero Background" 
               className="w-full h-full object-cover"
             />
