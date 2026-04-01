@@ -154,7 +154,7 @@ export default function App() {
         <section className="relative w-full h-[80vh] min-h-[600px] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img 
-              src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?q=80&w=2070&auto=format&fit=crop" 
+              src="https://raw.githubusercontent.com/Amkoo996/Adis-HausMeister-Plus/main/public/Gemini_Generated_Image_55kxp555kxp555kx.png"
               alt="Hero Background" 
               className="w-full h-full object-cover"
             />
